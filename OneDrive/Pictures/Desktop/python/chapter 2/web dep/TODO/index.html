@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Day Planner — Your day, in focus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar glass-panel">
+        <div class="brand-wrap">
+          <div class="brand-mark">D</div>
+          <div>
+            <div class="brand-name">Day Planner</div>
+            <div class="brand-sub">Make today count</div>
+          </div>
+        </div>
+
+        <nav class="side-nav" aria-label="Main navigation">
+          <button class="nav-item active" type="button" data-target="overview">◈ <span>Overview</span></button>
+          <button class="nav-item" type="button" data-target="calendar-panel">▦ <span>Calendar</span></button>
+          <button class="nav-item" type="button" data-target="task-panel">✓ <span>My tasks</span></button>
+          <button class="nav-item" type="button" data-target="growth-panel">✦ <span>Growth</span></button>
+          <button class="nav-item" type="button" data-target="reading-panel">▤ <span>Reading</span></button>
+        </nav>
+
+        <div class="mini-card">
+          <span class="eyebrow">Your local time</span>
+          <h3 id="delhi-clock">--:--</h3>
+          <p>Delhi, India <span class="timezone-tag">IST · UTC+5:30</span></p>
+        </div>
+        <p class="sidebar-note">A little progress each day adds up.</p>
+      </aside>
+
+      <main class="main-panel" id="overview">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="greeting">YOUR DAY AT A GLANCE</p>
+            <h1 id="headline-date">Today</h1>
+            <p class="topbar-subtitle">Plan with purpose. Make room for what matters.</p>
+          </div>
+
+          <div class="topbar-actions">
+            <span class="timezone-chip"><span class="live-dot"></span> Delhi · <span id="header-clock">--:--</span> IST</span>
+            <button class="ghost-btn" id="export-tasks" type="button">↗ Export</button>
+            <button class="primary-btn" id="jump-add-task" type="button">＋ Add a task</button>
+          </div>
+        </header>
+
+        <section class="stats-grid" aria-label="Planner summary" id="summary">
+          <article class="stat-card glass-panel accent-purple">
+            <span>On your plate</span>
+            <strong id="stat-today">0 tasks</strong>
+            <small id="stat-today-caption">Scheduled for today</small>
+          </article>
+          <article class="stat-card glass-panel accent-blue">
+            <span>Done this week</span>
+            <strong id="stat-completed">0</strong>
+            <small>Tasks checked off</small>
+          </article>
+          <article class="stat-card glass-panel accent-gold">
+            <span>High priority</span>
+            <strong id="stat-priority">0 high</strong>
+            <small>Still on your list</small>
+          </article>
+          <article class="stat-card glass-panel accent-green">
+            <span>Daily progress</span>
+            <strong id="stat-focus">0%</strong>
+            <small id="stat-progress-caption">Your tasks, your pace</small>
+          </article>
+        </section>
+
+        <section class="workspace-grid">
+          <div class="panel glass-panel calendar-panel" id="calendar-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Calendar</p>
+                <h2 id="month-label">October 2026</h2>
+              </div>
+
+              <div class="month-controls">
+                <button class="ghost-btn small today-btn" id="go-today" type="button">Today</button>
+                <button class="icon-btn" id="prev-month" type="button" aria-label="Previous month">←</button>
+                <button class="icon-btn" id="next-month" type="button" aria-label="Next month">→</button>
+              </div>
+            </div>
+
+            <div class="calendar-weekdays" id="calendar-weekdays"></div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </div>
+
+          <div class="panel glass-panel task-panel" id="task-panel">
+            <div class="panel-head compact">
+              <div>
+                <p class="eyebrow">Schedule</p>
+                <h2 id="agenda-title">Today</h2>
+              </div>
+              <span class="task-count" id="agenda-count">0 tasks</span>
+            </div>
+
+            <form id="task-form" class="task-form">
+              <label>
+                <span>Task title</span>
+                <input id="task-title" type="text" placeholder="Deep work sprint" required maxlength="80" />
+              </label>
+
+              <div class="two-col">
+                <label>
+                  <span>Date</span>
+                  <input id="task-date" type="date" required />
+                </label>
+                <label>
+                  <span>Time</span>
+                  <input id="task-time" type="time" required />
+                </label>
+                <label>
+                  <span>Duration</span>
+                  <select id="task-duration">
+                    <option value="15">15 min</option>
+                    <option value="30" selected>30 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1.5 hours</option>
+                    <option value="120">2 hours</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="two-col">
+                <label>
+                  <span>Priority</span>
+                  <select id="task-priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span>Category</span>
+                  <select id="task-category">
+                    <option value="Work">Work</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Health">Health</option>
+                    <option value="Study">Study</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                <span>Notes <small class="optional-label">· optional</small></span>
+                <input id="task-notes" type="text" placeholder="Add a little context..." maxlength="140" />
+              </label>
+
+              <button class="primary-btn full" type="submit">Save task</button>
+            </form>
+
+            <div class="agenda-wrap">
+              <div class="agenda-head">
+                <h3>Agenda</h3>
+                <button class="ghost-btn small" type="button" id="clear-completed">Clear done</button>
+              </div>
+
+              <div class="agenda-tools">
+                <label class="search-box">
+                  <span aria-hidden="true">⌕</span>
+                  <input id="task-search" type="search" placeholder="Find a task..." aria-label="Search tasks" />
+                </label>
+                <select id="task-filter" class="filter-select" aria-label="Filter tasks">
+                  <option value="all">All tasks</option>
+                  <option value="open">To do</option>
+                  <option value="done">Completed</option>
+                </select>
+              </div>
+              <div id="agenda-list" class="agenda-list" aria-live="polite"></div>
+            </div>
+          </div>
+
+        </section>
+
+        <article class="panel glass-panel reading-panel" id="reading-panel">
+          <div class="panel-head">
+              <div>
+                <p class="eyebrow">Make time for a few pages</p>
+                <h2>Reading corner</h2>
+              </div>
+              <span class="reading-total" id="reading-today-total">0 min today</span>
+          </div>
+
+          <div class="reading-layout">
+              <div class="reading-library">
+                <label class="pdf-dropzone" id="pdf-dropzone" for="pdf-upload">
+                  <span class="upload-icon" aria-hidden="true">↑</span>
+                  <strong>Drop a book PDF here</strong>
+                  <span>or browse files · PDFs stay on this device</span>
+                  <input id="pdf-upload" type="file" accept="application/pdf,.pdf" multiple />
+                </label>
+
+                <div class="reading-goal-row">
+                  <label for="reading-goal">Daily reading goal</label>
+                  <div class="reading-goal-input">
+                    <input id="reading-goal" type="number" min="1" max="600" step="5" value="20" />
+                    <span>min</span>
+                  </div>
+                </div>
+                <div class="reading-progress-track" role="progressbar" aria-label="Daily reading goal progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="reading-progress-track">
+                  <span id="reading-progress-bar"></span>
+                </div>
+                <div class="reading-progress-caption" id="reading-progress-caption">20 minutes of reading a day</div>
+
+                <div class="reading-shelf-heading">
+                  <h3>Your bookshelf</h3>
+                  <span id="book-count">0 books</span>
+                </div>
+                <div class="book-shelf" id="book-shelf" aria-live="polite"></div>
+              </div>
+
+              <div class="reader-area">
+                <div class="reader-placeholder" id="reader-placeholder">
+                  <span class="reader-book-icon" aria-hidden="true">▤</span>
+                  <strong>Your next chapter starts here</strong>
+                  <span>Add a PDF, then open a book. Use the timer and update the page number as you read.</span>
+                </div>
+                <iframe id="pdf-reader" class="pdf-reader" title="PDF book reader" hidden></iframe>
+                <div class="reader-controls" id="reader-controls" hidden>
+                  <div class="reader-book-heading">
+                    <div>
+                      <strong id="active-book-title">Book title</strong>
+                      <span id="active-book-progress">Page 0</span>
+                    </div>
+                    <button class="reader-close" id="close-reader" type="button" aria-label="Close book">×</button>
+                  </div>
+                  <div class="reading-session-controls">
+                    <label class="reading-page-input">
+                      <span>Current page</span>
+                      <input id="current-page" type="number" min="0" value="0" />
+                    </label>
+                    <label class="reading-page-input">
+                      <span>Total pages <small class="optional-label">· optional</small></span>
+                      <input id="total-pages" type="number" min="1" placeholder="Unknown" />
+                    </label>
+                    <div class="reading-timer-wrap">
+                      <span class="reading-timer-label">This session</span>
+                      <strong id="reading-session-clock">00:00</strong>
+                    </div>
+                    <div class="reading-actions">
+                      <button class="primary-btn" id="reading-toggle" type="button">Start reading</button>
+                      <button class="ghost-btn" id="reading-finish" type="button" disabled>Finish & save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <div class="reading-history">
+              <div class="reading-history-heading">
+                <h3>Recent reading</h3>
+                <span>Minutes &amp; pages saved by day</span>
+              </div>
+              <div class="reading-log" id="reading-log" aria-live="polite"></div>
+          </div>
+          <p class="reading-privacy">Your PDFs, reading time, and page progress stay in this browser. They are not uploaded to the AI coach.</p>
+          <p class="reading-message" id="reading-message" role="status" aria-live="polite"></p>
+        </article>
+
+        <section class="growth-section" id="growth-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Build your momentum</p>
+              <h2>A little better, every day.</h2>
+            </div>
+            <p>Make space to focus, learn, and notice your progress.</p>
+          </div>
+
+          <div class="growth-grid">
+            <article class="panel glass-panel coach-panel" id="coach-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Your personal coach</p>
+                  <h2><span class="coach-spark">✦</span> AI day coach</h2>
+                </div>
+                <span class="ai-badge">OPENAI</span>
+              </div>
+              <p class="coach-intro">Get a practical plan, break a big goal into small steps, or reflect on your day.</p>
+              <div class="coach-presets" aria-label="Quick coaching prompts">
+                <button class="prompt-chip" type="button" data-prompt="plan">Plan my day</button>
+                <button class="prompt-chip" type="button" data-prompt="breakdown">Break down a goal</button>
+                <button class="prompt-chip" type="button" data-prompt="reflect">Help me reflect</button>
+              </div>
+              <label class="coach-input-label" for="coach-prompt">What would you like help with?</label>
+              <textarea id="coach-prompt" rows="3" maxlength="1200" placeholder="I have an exam next week and keep putting off revision..."></textarea>
+              <div class="coach-actions">
+                <span class="privacy-note">Your prompt and today's planner context go to OpenAI.</span>
+                <button class="primary-btn" id="ask-coach" type="button">Ask coach <span>→</span></button>
+              </div>
+              <div class="coach-response" id="coach-response" aria-live="polite">
+                <span class="response-placeholder">Your suggestions will appear here. Be specific about your goal, available time, or what feels difficult.</span>
+              </div>
+            </article>
+
+            <article class="panel glass-panel focus-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Do one thing well</p>
+                  <h2>Focus session</h2>
+                </div>
+                <span class="focus-status" id="focus-status">READY</span>
+              </div>
+              <p class="focus-description">A little focused time beats a perfect plan.</p>
+              <div class="focus-clock" id="focus-clock" aria-live="off">25:00</div>
+              <div class="focus-presets" aria-label="Focus timer length">
+                <button class="focus-preset active" type="button" data-minutes="25">25 min</button>
+                <button class="focus-preset" type="button" data-minutes="50">50 min</button>
+              </div>
+              <div class="focus-actions">
+                <button class="primary-btn" id="focus-toggle" type="button">Start focus</button>
+                <button class="ghost-btn" id="focus-reset" type="button">Reset</button>
+              </div>
+              <p class="focus-total">Focused today <strong id="focus-total">0 min</strong></p>
+            </article>
+
+            <article class="panel glass-panel goals-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Keep moving forward</p>
+                  <h2>Goals & milestones</h2>
+                </div>
+                <span class="task-count" id="goal-count">0 active</span>
+              </div>
+              <form id="goal-form" class="inline-form">
+                <label class="sr-only" for="goal-title">Add a goal</label>
+                <input id="goal-title" type="text" maxlength="90" placeholder="e.g. Finish my portfolio" required />
+                <button class="primary-btn" type="submit" aria-label="Add goal">＋</button>
+              </form>
+              <div class="goal-list" id="goal-list" aria-live="polite"></div>
+            </article>
+
+            <article class="panel glass-panel habits-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Small actions, repeated</p>
+                  <h2>Daily habits</h2>
+                </div>
+                <span class="task-count" id="habit-count">0 of 3 today</span>
+              </div>
+              <div class="habit-list" id="habit-list" aria-live="polite"></div>
+              <p class="habit-caption">Progress, not perfection. Your check-ins stay on this device.</p>
+            </article>
+
+            <article class="panel glass-panel reflection-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="eyebrow">Close the loop</p>
+                  <h2>Daily reflection</h2>
+                </div>
+                <span class="reflection-date" id="reflection-date"></span>
+              </div>
+              <label for="reflection-win">One thing I did well</label>
+              <textarea id="reflection-win" rows="2" maxlength="300" placeholder="Give yourself credit for..."></textarea>
+              <label for="reflection-learned">Something I learned</label>
+              <textarea id="reflection-learned" rows="2" maxlength="300" placeholder="Today I learned..."></textarea>
+              <label for="reflection-next">One thing for tomorrow</label>
+              <textarea id="reflection-next" rows="2" maxlength="300" placeholder="Tomorrow, I will..."></textarea>
+              <div class="reflection-footer">
+                <span id="reflection-saved">Saved privately on this device</span>
+                <button class="ghost-btn small" type="button" id="save-reflection">Save reflection</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
